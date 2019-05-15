@@ -29,11 +29,7 @@ keep the path to task method in env variable
 **ENV PYQS_TASK_PATH="api.tasks.process"**
 
 
-SUPERVISOR CONF 
-   command=pyqs queue-name --concurrency 1 --batchsize 1 --log-level INFO --region %(ENV_AWS_DEFAULT_REGION)s --secret-access-key %(ENV_AWS_SECRET_ACCESS_KEY)s --access-key-id %(ENV_AWS_ACCESS_KEY_ID)s
 
-
-   
 Usage
 -----
 
