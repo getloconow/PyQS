@@ -23,6 +23,7 @@ from pyqs.utils import get_aws_region_name, decode_message
 MESSAGE_DOWNLOAD_BATCH_SIZE = 10
 LONG_POLLING_INTERVAL = 20
 logger = logging.getLogger("pyqs")
+env_task_path = os.environ.get('PYQS_TASK_PATH', 'common.pyqs.process')
 
 
 def get_conn(region=None, access_key_id=None, secret_access_key=None):
@@ -176,9 +177,7 @@ class ProcessWorker(BaseWorker):
         fetch_time = packed_message['start_time']
         timeout = packed_message['timeout']
         message_body = decode_message(message)
-        full_task_path = message_body['task']
-        args = message_body['args']
-        kwargs = message_body['kwargs']
+        full_task_path = env_task_path
 
         task_name = full_task_path.split(".")[-1]
         task_path = ".".join(full_task_path.split(".")[:-1])
@@ -190,26 +189,24 @@ class ProcessWorker(BaseWorker):
         current_time = time.time()
         if int(current_time - fetch_time) >= timeout:
             logger.warning(
-                "Discarding task {} with args: {} and kwargs: {} due to "
+                "Discarding task {} with kwargs: {} due to "
                 "exceeding visibility timeout".format(  # noqa
                     full_task_path,
-                    repr(args),
-                    repr(kwargs),
+                    repr(message_body),
                 )
             )
             return True
         try:
             start_time = time.clock()
-            task(*args, **kwargs)
+            task(message_body)
         except Exception:
             end_time = time.clock()
             logger.exception(
-                "Task {} raised error in {:.4f} seconds: with args: {} "
-                "and kwargs: {}: {}".format(
+                "Task {} raised error in {:.4f} seconds: with"
+                "kwargs: {}: {}".format(
                     full_task_path,
                     end_time - start_time,
-                    args,
-                    kwargs,
+                    message_body,
                     traceback.format_exc(),
                 )
             )
@@ -221,12 +218,11 @@ class ProcessWorker(BaseWorker):
                 ReceiptHandle=message['ReceiptHandle']
             )
             logger.info(
-                "Processed task {} in {:.4f} seconds with args: {} "
-                "and kwargs: {}".format(
+                "Processed task {} in {:.4f} seconds with  "
+                "kwargs: {}".format(
                     full_task_path,
                     end_time - start_time,
-                    repr(args),
-                    repr(kwargs),
+                    repr(message_body),
                 )
             )
         return True
