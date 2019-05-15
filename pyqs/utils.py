@@ -6,9 +6,13 @@ import boto3
 
 
 def decode_message(message):
-    message = json.loads(message)
-    message_body = message['Body']
-    return message_body if message_body else {}
+
+    try:
+        message_body = message['Body']
+        json_body = json.loads(message_body)
+    except BaseException as e:
+        json_body = {}
+    return json_body
 
 
 def decode_celery_message(json_task):
