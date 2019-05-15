@@ -26,7 +26,7 @@ FIRST THINGS FIRST
 
 keep the path to task method in env variable
 
-`ENV PYQS_TASK_PATH="api.tasks.process"`
+**ENV PYQS_TASK_PATH="api.tasks.process"**
 
 Usage
 -----
