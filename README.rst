@@ -30,15 +30,12 @@ keep the path to task method in env variable
 
 
 SUPERVISOR CONF 
-.. code:: python
-
     [program:pyqs]
     stdout_logfile=/dev/stdout
     stdout_logfile_maxbytes=0
     stderr_logfile=/dev/stderr
     stderr_logfile_maxbytes=0
     command=pyqs queue-name --concurrency 1 --batchsize 1 --log-level INFO --region %(ENV_AWS_DEFAULT_REGION)s --secret-access-key %(ENV_AWS_SECRET_ACCESS_KEY)s --access-key-id %(ENV_AWS_ACCESS_KEY_ID)s
-
 Usage
 -----
 
