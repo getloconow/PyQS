@@ -17,9 +17,16 @@ be installed in all the usual ways. To install via *CLI*:
 
 .. code:: bash
 
-    $ pip install pyqs
+    $ pip install git+https://github.com/getloconow/PyQS.git
 
 Or just add it to your ``requirements.txt``.
+
+FIRST THINGS FIRST
+-----
+
+keep the path to task method in env variable
+
+`ENV PYQS_TASK_PATH="api.tasks.process"`
 
 Usage
 -----
