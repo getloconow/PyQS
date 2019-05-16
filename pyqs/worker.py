@@ -23,7 +23,7 @@ from pyqs.utils import get_aws_region_name, decode_message
 MESSAGE_DOWNLOAD_BATCH_SIZE = 10
 LONG_POLLING_INTERVAL = 20
 logger = logging.getLogger("pyqs")
-env_task_path = os.environ.get('PYQS_TASK_PATH', 'common.pyqs.process')
+env_task_path = os.environ.get('PYQS_TASK_PATH', 'common.tasks.process')
 
 
 def get_conn(region=None, access_key_id=None, secret_access_key=None):
